@@ -1,62 +1,73 @@
+'''
+This script uses tkinter to make a gui to change wallpapers for those using
+i3wm. It takes two arguments, the first one is the path to your i3 config.
+The second is the path to the folder where you store your wallpapers.
+You're going to make sure you are using feh to set your wallpapers beforehand
+and also that the very last line in your i3 config is the one where the
+wallpaper gets set. For this to work you are going to need to install
+tkinter, feh, i3, and ImageTk, and Image.
+'''
+
 from tkinter import *
 from math import floor
 from PIL import Image, ImageTk
-import os
+import os, sys
 
-def mouse_wheel(event):
-    global count
-    if event.num == 5 or event.delta == -120:
-        count -=1
-    if event.num == 4 or event.delta == 120:
-        count += 1
-    label['text'] = count
-
-count = 0
-
-def update_scrollregion(event):
+def update_scrollregion(event): #provide scrolling
     photoCanvas.configure(scrollregion=photoCanvas.bbox("all"))
 
-def callback(num):
-    temp = filenames[num]
-    #heres some shit that we will need later
-    readConfig = open('/home/holden/.i3/config')
+#make sure 2 arguments are included
+while True:
+    try:
+        i3_config = sys.argv[1]
+        wall_folder = sys.argv[2]
+        break
+    except IndexError:
+        print("Must include 2 arguments: i3 config location and wallpaper folder")
+        exit()
+        break
+
+
+def callback(num):     #function that changes i3 config
+    temp = filenames[num]  #save filename of chosen wallpaper
+    readConfig = open(i3_config)
     lines = readConfig.readlines()
     readConfig.close()
-    w = open('/home/holden/.i3/config','w')
-    w.writelines([item for item in lines[:-1]])
-    w.write('exec_always --no-startup-id feh --bg-fill /home/holden/Downloads/wallpapers/'+ temp)
-    w.close()
-    os.system('i3-msg restart')
+    w = open(i3_config,'w') #opens i3 config to write
+    w.writelines([item for item in lines[:-1]]) #delete last line in i3 config
+    w.write('exec_always --no-startup-id feh --bg-fill ' + wall_folder + temp)
+    w.close()  #save i3 config
+    os.system('i3-msg restart') #restart i3
 
-imagearray = []
-filenames = []
-wall_list = os.listdir('/home/holden/Downloads/wallpapers/')
+imagearray = [] #initialize array of images
+filenames = []  #initialize array of file names
+wall_list = os.listdir(wall_folder)
 num_walls = len(wall_list)
-for filename in os.listdir('/home/holden/Downloads/wallpapers/'):
+for filename in os.listdir(wall_folder):
     filenames.append(filename)
 
-
 root = Tk()
-root.title("please select a wallpaper")
-photoFrame = Frame(root,width=1900,height=500,bg="#232629")
+root.title("Please select a wallpaper")
+photoFrame = Frame(root, width=1900, height=500, bg="#232629")
 photoFrame.grid()
-photoFrame.rowconfigure(0,weight=1)
-photoFrame.columnconfigure(0,weight=1)
-photoCanvas = Canvas(photoFrame,bg="#232629",width=1900,height=1000)
-photoCanvas.grid(row=0,column=0,sticky="nsew")
-canvasFrame = Frame(photoCanvas,bg="#EBEBEB",width=1900,height=1000)
-photoCanvas.create_window(0,0,window=canvasFrame,anchor='nw',width=1850,height=200*floor((num_walls/9))+200)
+photoFrame.rowconfigure(0, weight=1)
+photoFrame.columnconfigure(0, weight=1)
+photoCanvas = Canvas(photoFrame, bg="#232629",width=1900,height=1000)
+photoCanvas.grid(row=0, column=0, sticky="nsew")
+canvasFrame = Frame(photoCanvas, bg="#EBEBEB",width=1900,height = 1000)
+photoCanvas.create_window(0, 0, window=canvasFrame, anchor='nw',width=1850,height=200*floor((num_walls/9))+200)
 
-
-
-
-for file in os.listdir('/home/holden/Downloads/wallpapers/'):
-    picture = Image.open(os.path.join('/home/holden/Downloads/wallpapers/',file))
+#create images out of the wallpapers so they can be used on buttons
+#this part is slow which is why the script takes some time to start
+#not sure how to make it faster
+for file in os.listdir(wall_folder):
+    picture = Image.open(os.path.join(wall_folder,file))
     picture = picture.resize((200,200),Image.ANTIALIAS)
     photo=ImageTk.PhotoImage(picture)
     imagearray.append(photo)
 
-
+#create grid of bttton with pictures from wallpaper folder
+#when clicked will call callback() function
 buttons = []
 count = 0
 for j in range(0,num_walls):
@@ -67,14 +78,12 @@ for j in range(0,num_walls):
 
     buttons[j].grid(row =count , column = j % 9)
 
-photoScroll = Scrollbar(photoFrame,orient = VERTICAL)
-photoScroll.config(command=photoCanvas.yview)
-photoScroll.config(bg="#232629")
-photoCanvas.config(yscrollcommand=photoScroll.set)
-photoScroll.grid(row=0,column=1,sticky="ns")
-canvasFrame.bind("<Configure>",update_scrollregion)
-root.bind("<Button-4>",mouse_wheel)
-root.bind("<Button-5>",mouse_wheel)
 
+photoScroll = Scrollbar(photoFrame, orient=VERTICAL)
+photoScroll.config(command=photoCanvas.yview)
+photoScroll.config(bg = '#232629')
+photoCanvas.config(yscrollcommand=photoScroll.set)
+photoScroll.grid(row=0, column=1, sticky="ns")
+canvasFrame.bind("<Configure>", update_scrollregion)
 
 root.mainloop()
