@@ -32,11 +32,12 @@ def callback(num):     #function that changes i3 config
     temp = filenames[num]  #save filename of chosen wallpaper
     readConfig = open(i3_config)
     lines = readConfig.readlines()
-    readConfig.close()
-    w = open(i3_config,'w') #opens i3 config to write
-    w.writelines([item for item in lines[:-1]]) #delete last line in i3 config
-    w.write('exec_always --no-startup-id feh --bg-fill ' + wall_folder + temp)
-    w.close()  #save i3 config
+    for i in range(0,len(lines)):
+        if 'feh' in lines[i] and lines[i][0] != '#':
+            lines[i] = 'exec_always --no-startup-id feh --bg-fill ' + wall_folder + temp
+    config = open(i3_config,'w') #opens i3 config to write
+    config.writelines([item for item in lines])
+    config.close()  #save i3 config
     os.system('i3-msg restart') #restart i3
 
 imagearray = [] #initialize array of images
