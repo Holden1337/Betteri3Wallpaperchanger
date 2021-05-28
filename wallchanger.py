@@ -2,10 +2,8 @@
 This script uses tkinter to make a gui to change wallpapers for those using
 i3wm. It takes two arguments, the first one is the path to your i3 config.
 The second is the path to the folder where you store your wallpapers.
-You're going to make sure you are using feh to set your wallpapers beforehand
-and also that the very last line in your i3 config is the one where the
-wallpaper gets set. For this to work you are going to need to install
-tkinter, feh, i3, and ImageTk, and Image.
+You're going to make sure you are using feh to set your wallpapers beforehand. 
+For this to work you are going to need to installtkinter, feh, i3, and PIL/pillow
 '''
 
 from tkinter import *
