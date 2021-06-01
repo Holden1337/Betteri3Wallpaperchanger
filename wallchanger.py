@@ -32,7 +32,7 @@ def callback(num):     #function that changes i3 config
     lines = readConfig.readlines()
     for i in range(0,len(lines)):
         if 'feh' in lines[i] and lines[i][0] != '#':
-            lines[i] = 'exec_always --no-startup-id feh --bg-fill ' + wall_folder + temp
+            lines[i] = 'exec_always --no-startup-id feh --bg-scale ' + wall_folder + temp
     config = open(i3_config,'w') #opens i3 config to write
     config.writelines([item for item in lines])
     config.close()  #save i3 config
