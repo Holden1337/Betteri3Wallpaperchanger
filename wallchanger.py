@@ -6,7 +6,7 @@ You're going to make sure you are using feh to set your wallpapers beforehand.
 For this to work you are going to need to installtkinter, feh, i3, and PIL/pillow
 '''
 
-from tkinter import *
+from tkinter import Tk, Frame, Canvas, Scrollbar, Button, LEFT, VERTICAL 
 from math import floor
 from PIL import Image, ImageTk
 import os, sys
