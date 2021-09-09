@@ -51,9 +51,9 @@ photoFrame = Frame(root, width=1900, height=500, bg="#232629")
 photoFrame.grid()
 photoFrame.rowconfigure(0, weight=1)
 photoFrame.columnconfigure(0, weight=1)
-photoCanvas = Canvas(photoFrame, bg="#232629", width=1900, height=1000)
+photoCanvas = Canvas(photoFrame, bg="#232629", width=1900, height=1080)
 photoCanvas.grid(row=0, column=0, sticky="nsew")
-canvasFrame = Frame(photoCanvas, bg="#EBEBEB", width=1900, height = 1000)
+canvasFrame = Frame(photoCanvas, bg="#EBEBEB", width=1900, height = 1080)
 photoCanvas.create_window(0, 0, window=canvasFrame, anchor='nw', width=1900, height=200*floor((num_walls/9))+300)
 
 # create images out of the wallpapers so they can be used on buttons
