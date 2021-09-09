@@ -54,14 +54,14 @@ photoFrame.columnconfigure(0, weight=1)
 photoCanvas = Canvas(photoFrame, bg="#232629", width=1900, height=1000)
 photoCanvas.grid(row=0, column=0, sticky="nsew")
 canvasFrame = Frame(photoCanvas, bg="#EBEBEB", width=1900, height = 1000)
-photoCanvas.create_window(0, 0, window=canvasFrame, anchor='nw', width=1850, height=200*floor((num_walls/9))+300)
+photoCanvas.create_window(0, 0, window=canvasFrame, anchor='nw', width=1900, height=200*floor((num_walls/9))+300)
 
 # create images out of the wallpapers so they can be used on buttons
 # this part is slow which is why the script takes some time to start
 # not sure how to make it faster
 for file in os.listdir(wall_folder):
     picture = Image.open(os.path.join(wall_folder,file))
-    picture = picture.resize((200, 200), Image.ANTIALIAS)
+    picture = picture.resize((207, 200), Image.ANTIALIAS)
     photo=ImageTk.PhotoImage(picture)
     imagearray.append(photo)
 
@@ -70,7 +70,7 @@ for file in os.listdir(wall_folder):
 buttons = []
 count = 0
 for j in range(0, num_walls):
-    buttons.append(Button(canvasFrame, image=imagearray[j],command=(lambda j=j:callback(j)), height=200, width=200, highlightbackground = '#232629', compound=LEFT, borderwidth=0))
+    buttons.append(Button(canvasFrame, image=imagearray[j],command=(lambda j=j:callback(j)), height=200, width=207, highlightbackground = '#232629', compound=LEFT, borderwidth=0))
 
     if j%9 == 0:
         count +=1
