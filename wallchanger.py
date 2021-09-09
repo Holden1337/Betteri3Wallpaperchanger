@@ -54,7 +54,7 @@ photoFrame.columnconfigure(0, weight=1)
 photoCanvas = Canvas(photoFrame, bg="#232629", width=1900, height=1000)
 photoCanvas.grid(row=0, column=0, sticky="nsew")
 canvasFrame = Frame(photoCanvas, bg="#EBEBEB", width=1900, height = 1000)
-photoCanvas.create_window(0, 0, window=canvasFrame, anchor='nw', width=1850, height=200*floor((num_walls/9))+200)
+photoCanvas.create_window(0, 0, window=canvasFrame, anchor='nw', width=1850, height=200*floor((num_walls/9))+300)
 
 # create images out of the wallpapers so they can be used on buttons
 # this part is slow which is why the script takes some time to start
