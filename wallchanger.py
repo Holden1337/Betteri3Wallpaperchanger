@@ -10,6 +10,7 @@ from tkinter import Tk, Frame, Canvas, Scrollbar, Button, LEFT, VERTICAL
 from math import floor
 from PIL import Image, ImageTk
 import os, sys
+from tqdm import tqdm 
 
 def update_scrollregion(event): #provide scrolling
     photoCanvas.configure(scrollregion=photoCanvas.bbox("all"))
@@ -59,7 +60,7 @@ photoCanvas.create_window(0, 0, window=canvasFrame, anchor='nw', width=1900, hei
 # create images out of the wallpapers so they can be used on buttons
 # this part is slow which is why the script takes some time to start
 # not sure how to make it faster
-for file in os.listdir(wall_folder):
+for file in tqdm(os.listdir(wall_folder)):
     picture = Image.open(os.path.join(wall_folder,file))
     picture = picture.resize((207, 200), Image.ANTIALIAS)
     photo=ImageTk.PhotoImage(picture)
